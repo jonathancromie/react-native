@@ -18,6 +18,13 @@ class HomeScreen extends React.Component {
         return {
             // title: "Home"
             headerTitle: <LogoTitle />,
+            headerLeft: (
+                <Button
+                    onPress={() => navigation.navigate("MyModal")}
+                    title="Info"
+                    color="#fff"
+                />
+            ),
             headerRight: (
                 <Button
                     onPress={navigation.getParam("increaseCount")}
@@ -131,10 +138,34 @@ class DetailsScreen extends React.Component {
     }
 }
 
-const RootStack = createStackNavigator(
+class ModalScreen extends React.Component {
+    render() {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center"
+                }}
+            >
+                <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+                <Button
+                    onPress={() => this.props.navigation.goBack()}
+                    title="Dismiss"
+                />
+            </View>
+        );
+    }
+}
+
+const MainStack = createStackNavigator(
     {
-        Home: HomeScreen,
-        Details: DetailsScreen
+        Home: {
+            screen: HomeScreen
+        },
+        Details: {
+            screen: DetailsScreen
+        }
     },
     {
         initialRouteName: "Home",
@@ -149,6 +180,40 @@ const RootStack = createStackNavigator(
         }
     }
 );
+
+const RootStack = createStackNavigator(
+    {
+        Main: {
+            screen: MainStack
+        },
+        MyModal: {
+            screen: ModalScreen
+        }
+    },
+    {
+        mode: "modal",
+        headerMode: "none"
+    }
+);
+
+// const RootStack = createStackNavigator(
+//     {
+//         Home: HomeScreen,
+//         Details: DetailsScreen
+//     },
+//     {
+//         initialRouteName: "Home",
+//         navigationOptions: {
+//             headerStyle: {
+//                 backgroundColor: "#f4511e"
+//             },
+//             headerTintColor: "#fff",
+//             headerTitleStyle: {
+//                 fontWeight: "bold"
+//             }
+//         }
+//     }
+// );
 
 export default class App extends React.Component {
     render() {
